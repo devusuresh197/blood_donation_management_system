@@ -87,7 +87,7 @@ function RoleLogin({ onLogin }) {
         onLogin({ role: result.role, user: normalizeUser(result.role, result.user) });
         return;
       }
-      
+
       if (role === "recipient" && authMode === "register") {
         const parsed = recipientSchema.safeParse(registerForm);
         if (!parsed.success) {
@@ -119,10 +119,10 @@ function RoleLogin({ onLogin }) {
         <section className="glass rounded-[32px] border border-white/10 p-8 shadow-glow flex flex-col pt-8 overflow-y-auto max-h-[90vh]">
           <p className="text-xs uppercase tracking-[0.4em] text-brand-200/80">Blood Care Portal</p>
           <h1 className="mt-4 max-w-xl text-4xl font-semibold leading-tight text-white mb-2">
-            Fully matching ER Diagram System
+            blood donation management system
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
-            Database migrated properly to represent entities such as Admins, Blood Requests, and Blood Stocks dynamically.
+            Donate blood, save lives.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -130,9 +130,8 @@ function RoleLogin({ onLogin }) {
               <button
                 key={item.key}
                 onClick={() => { setRole(item.key); setAuthMode("login"); }}
-                className={`rounded-[24px] border p-5 text-left transition ${
-                  role === item.key ? "border-brand-400 bg-brand-500/15 shadow-lg shadow-brand-950/30" : "border-white/10 bg-white/5 hover:bg-white/10"
-                }`}
+                className={`rounded-[24px] border p-5 text-left transition ${role === item.key ? "border-brand-400 bg-brand-500/15 shadow-lg shadow-brand-950/30" : "border-white/10 bg-white/5 hover:bg-white/10"
+                  }`}
               >
                 <p className="text-lg font-semibold text-white">{item.title}</p>
                 <p className="mt-2 text-sm text-slate-300">{item.description}</p>
@@ -140,11 +139,11 @@ function RoleLogin({ onLogin }) {
             ))}
           </div>
 
-          <div className="mt-8 grid gap-4 grid-cols-2 md:grid-cols-2">
+          {/* <div className="mt-8 grid gap-4 grid-cols-2 md:grid-cols-2">
             <DemoCard title="Blood Bank Demo" lines={["Email: redpulse@bloodcare.com", "Password: bank123"]} />
             <DemoCard title="Recipient Demo" lines={["Email: karan@bloodcare.com", "Password: recipient123"]} />
             <DemoCard title="Donor Demo" lines={["Email: aarav@bloodcare.com", "Password: donor123"]} />
-          </div>
+          </div> */}
         </section>
 
         <section className="glass rounded-[32px] border border-white/10 p-8 shadow-glow flex flex-col justify-center max-h-[90vh] overflow-y-auto">
@@ -188,7 +187,7 @@ function RoleLogin({ onLogin }) {
                 <Field label="Password"><input type="password" value={registerForm.password} onChange={(event) => updateRegisterField("password", event.target.value)} className={inputClass} placeholder="Create password" /></Field>
               </div>
             )}
-            
+
             {authMode === "register" && role === "recipient" && (
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Name"><input value={registerForm.name} onChange={(event) => updateRegisterField("name", event.target.value)} className={inputClass} placeholder="Full name" /></Field>

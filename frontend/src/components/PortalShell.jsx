@@ -158,10 +158,10 @@ function PortalShell({ session, onLogout }) {
           if (!cancelled) {
             setData((current) => ({
               ...current,
-              bankSummary: { 
-                name: "Super Admin", 
-                pendingDonorRequests: donorRequestsResult.data.length, 
-                pendingRecipientRequests: recipientRequestsResult.data.length, 
+              bankSummary: {
+                name: "Super Admin",
+                pendingDonorRequests: donorRequestsResult.data.length,
+                pendingRecipientRequests: recipientRequestsResult.data.length,
                 totalDonations: donationsResult.data.length,
                 availableUnits: inventoryResult.data.reduce((sum, item) => sum + Number(item.unitsAvailable || 0), 0)
               },
@@ -264,9 +264,8 @@ function PortalShell({ session, onLogout }) {
               <button
                 key={page}
                 onClick={() => setActivePage(page)}
-                className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm transition ${
-                  activePage === page ? "bg-brand-600 text-white shadow-lg shadow-brand-950/40" : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
-                }`}
+                className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm transition ${activePage === page ? "bg-brand-600 text-white shadow-lg shadow-brand-950/40" : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
+                  }`}
               >
                 <span>{page}</span>
               </button>
@@ -335,6 +334,10 @@ function renderPage({
           setBloodGroupFilter={setBloodGroupFilter}
         />
       );
+    }
+    if (activePage === "My Transfers") {
+      const completedTransfers = data.recipientRequests.filter(req => req.status === "Completed");
+      return <DataPanel title="My Completed Transfers" rows={completedTransfers} columns={["id", "bankName", "bloodGroup", "units", "requestDate", "status"]} />;
     }
     return <RecipientOwnRequestsTab user={session.user} rows={data.recipientRequests} bankOptions={data.bankCatalog} onSubmit={onCreateRecipientRequest} />;
   }
@@ -432,7 +435,7 @@ function TopBar({ search, setSearch, activePage, session, onLogout }) {
 function DonorDashboard({ user, eligibility, donations, donorRequests }) {
   return (
     <div className="space-y-6">
-      <HeroCard eyebrow="Donor Dashboard" title={`Welcome back, ${user.name}`} description="Your donation activity and eligibility are now loaded from the backend API." />
+      <HeroCard eyebrow="Donor Dashboard" title={`Welcome back, ${user.name}`} description="Your donation activity and eligibility are now loaded." />
       <div className="grid gap-4 md:grid-cols-3">
         <InfoCard title="Blood Group" value={user.bloodGroup} note="Loaded from login profile" />
         <InfoCard title="Eligibility" value={eligibility?.eligibility ?? user.status} note={eligibility?.reason ?? "No eligibility note"} />
@@ -449,7 +452,7 @@ function DonorDashboard({ user, eligibility, donations, donorRequests }) {
 function RecipientDashboard({ user, requests }) {
   return (
     <div className="space-y-6">
-      <HeroCard eyebrow="Recipient Dashboard" title={`Welcome, ${user.name}`} description="Your requests and blood search results are now pulled from the backend API." />
+      <HeroCard eyebrow="Recipient Dashboard" title={`Welcome, ${user.name}`} description="Your requests and blood search results are now pulled" />
       <div className="grid gap-4 md:grid-cols-3">
         <InfoCard title="Required Blood Group" value={user.bloodGroup} note="Primary search group" />
         <InfoCard title="Request Count" value={requests.length} note={`${requests.filter((item) => item.status === "Accepted").length} accepted`} />
@@ -466,7 +469,7 @@ function RecipientDashboard({ user, requests }) {
 function BloodBankDashboard({ summary, donorRequests, recipientRequests }) {
   return (
     <div className="space-y-6">
-      <HeroCard eyebrow="Blood Bank Dashboard" title={`${summary?.name ?? "Blood Bank"} request center`} description="Donor requests, recipient requests, inventory, and donations are loaded from MySQL." />
+      <HeroCard eyebrow="Blood Bank Dashboard" title={`${summary?.name ?? "Blood Bank"} request center`} description="Donor requests, recipient requests, inventory, and donations are loaded " />
       <div className="grid gap-4 md:grid-cols-3">
         <InfoCard title="Pending Donor Requests" value={summary?.pendingDonorRequests ?? donorRequests.length} note="Waiting for review" />
         <InfoCard title="Pending Recipient Requests" value={summary?.pendingRecipientRequests ?? recipientRequests.length} note="Assigned to this bank" />
@@ -483,7 +486,7 @@ function BloodBankDashboard({ summary, donorRequests, recipientRequests }) {
 function RecipientSearchPage({ user, banks, bloodGroupFilter, setBloodGroupFilter }) {
   return (
     <div className="space-y-6">
-      <SectionHeader title="Search Blood" subtitle="Search matching blood across banks from the backend recommendation endpoint." />
+      <SectionHeader title="Search Blood" subtitle="Search matching blood across banks" />
       <div className="rounded-[28px] bg-white/5 p-6 ring-1 ring-white/10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -597,10 +600,10 @@ function DonorRequestTab({ user, rows, bankOptions, onSubmit }) {
           fields={[
             { key: "bloodGroup", label: "Blood Group", type: "select", options: bloodGroups.filter((item) => item !== "All") },
             { key: "bankCode", label: "Blood Bank", type: "select", options: bankOptions },
-            { 
-              key: "preferredDate", 
-              label: "Preferred Date", 
-              type: "input", 
+            {
+              key: "preferredDate",
+              label: "Preferred Date",
+              type: "input",
               inputType: "date",
               validate: (val) => bookedDates.includes(val) ? "This blood bank has reached its appointment capacity for this date. Please select a different day." : null
             },
@@ -656,7 +659,7 @@ function ManagedRequestTable({
 function InventoryPage({ rows }) {
   return (
     <div className="space-y-6">
-      <SectionHeader title="Blood Stock Entries" subtitle="Individual batches tracked by collection and expiry, matching the ER Diagram specification." />
+      <SectionHeader title="Blood Stock Entries" subtitle="Individual batches tracked by collection and expiry," />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {rows.length ? rows.map((item) => (
           <div key={item.id} className="rounded-[24px] bg-white/5 p-5 ring-1 ring-white/10">
@@ -884,7 +887,7 @@ function RequestFormCard({ title, fields, form, setForm, onSubmit, submitLabel }
     const newErrors = {};
     fields.forEach(f => { if (f.validate) newErrors[f.key] = f.validate(form[f.key]); });
     setErrors(newErrors);
-    
+
     // Only submit if no active physical errors exist
     if (Object.values(newErrors).every(err => !err)) onSubmit();
   };
@@ -986,11 +989,14 @@ function mapRecipientRequests(rows) {
   return rows.map((row) => ({
     id: row.idCode,
     recipient: row.recipientName,
+    recipientName: row.recipientName,
     bank: row.bankName,
+    bankName: row.bankName,
     bloodGroup: row.bloodGroup,
     units: row.units,
     urgency: row.urgency,
     status: row.status,
+    requestDate: row.createdAt?.slice?.(0, 10) ?? row.createdAt,
   }));
 }
 
